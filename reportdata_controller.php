@@ -15,6 +15,9 @@ class Reportdata_controller extends Module_controller
         }
 
         header('Access-Control-Allow-Origin: *');
+        
+        // Add local config
+        configAppendFile(__DIR__ . '/config.php');
     }
 
     public function index()
