@@ -15,4 +15,18 @@ if (env('IP_LABELS', [])) {
     }
 }
 
-return ['ip_ranges' => $ip_ranges];
+return ['ip_ranges' => $ip_ranges,
+       
+	/*
+	|===============================================
+	| Client inactivity
+	|===============================================
+	|
+	| Set this to be the number of days until a client shows as
+	| being inactive in the round Client Activity widget, default is
+	| 30 days.
+	|
+	*/
+	$conf['days_inactive'] = getenv_default(30);
+       
+       ];
