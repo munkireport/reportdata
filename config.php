@@ -1,18 +1,5 @@
 <?php
 
-$ip_ranges = [];
-if (env('IP_LABELS', [])) {
-    foreach (env('IP_LABELS', []) as $label) {
-        if (env('IP_RANGES_' . $label, [])) {
-            if (env('IP_NAME_' . $label)) {
-                $name = env('IP_NAME_' . $label);
-            }
-            else{
-                $name = $label;
-            }
-            $ip_ranges[$name] = env('IP_RANGES_' . $label, []);
-        }
-    }
-}
-
-return ['ip_ranges' => $ip_ranges];
+return [
+  'ip_config_path' => env('REPORTDATA_IP_CONFIG_PATH', APP_ROOT . 'local/module_configs/ip_ranges.yml'),
+];
