@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Reportdata module class
  *
@@ -17,7 +19,7 @@ class Reportdata_controller extends Module_controller
         header('Access-Control-Allow-Origin: *');
         
         // Add local config
-        configAppendFile(__DIR__ . '/config.php');
+        configAppendFile(__DIR__ . '/config.php', 'reportdata');
     }
 
     public function index()
@@ -157,7 +159,12 @@ class Reportdata_controller extends Module_controller
         }
 
         if (! $ip_arr) { // Empty array, fall back on default ip ranges
-            $ip_arr = conf('ip_ranges');
+          try {
+              $ip_arr = Yaml::parseFile(conf('reportdata')['ip_config_path']);
+          } catch (\Exception $e) {
+             // Do something
+             $ip_arr = [];
+          }
         }
         
         $out = array();
