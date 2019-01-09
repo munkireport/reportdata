@@ -59,6 +59,7 @@ $(document).on('appReady', function() {
 
 		chart.title(" ");
 		chart.legend.updateState(false);
+		chart.tooltip.valueFormatter(function(d){return d});
 
 		d3.select("#client-widget svg")
 			.datum(testdata1)
