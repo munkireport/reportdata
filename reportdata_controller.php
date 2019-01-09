@@ -10,6 +10,8 @@ use Symfony\Component\Yaml\Yaml;
  **/
 class Reportdata_controller extends Module_controller
 {
+    private $config;
+    
     public function __construct()
     {
         if (! $this->authorized()) {
@@ -19,7 +21,7 @@ class Reportdata_controller extends Module_controller
         header('Access-Control-Allow-Origin: *');
         
         // Add local config
-        configAppendFile(__DIR__ . '/config.php', 'reportdata');
+        $this->config = require(__DIR__ . '/config.php');
     }
 
     public function index()
@@ -47,7 +49,9 @@ class Reportdata_controller extends Module_controller
     {
         $reportdata = new Reportdata_model();
         $obj = new View();
-        $obj->view('json', array('msg' => $reportdata->get_lastseen_stats()));
+        $obj->view('json', [
+          'msg' => $reportdata->get_lastseen_stats($this->config['days_inactive'])
+        ]);
     }
     
     /**
@@ -160,7 +164,7 @@ class Reportdata_controller extends Module_controller
 
         if (! $ip_arr) { // Empty array, fall back on default ip ranges
           try {
-              $ip_arr = Yaml::parseFile(conf('reportdata')['ip_config_path']);
+              $ip_arr = Yaml::parseFile($this->config['ip_config_path']);
           } catch (\Exception $e) {
              // Do something
              $ip_arr = [];

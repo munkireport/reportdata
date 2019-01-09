@@ -107,7 +107,7 @@ class Reportdata_model extends \Model
      *
      *
      **/
-    public function get_lastseen_stats()
+    public function get_lastseen_stats($inactive_days = 30)
     {
         $now = time();
         $hour_ago = $now - 3600;
@@ -115,7 +115,7 @@ class Reportdata_model extends \Model
         $week_ago = $now - 3600 * 24 * 7;
         $month_ago = $now - 3600 * 24 * 30;
         $three_month_ago = $now - 3600 * 24 * 90;
-        $custom_ago = $now - 3600 * 24 * intval(conf('days_inactive'));
+        $custom_ago = $now - 3600 * 24 * $inactive_days;
         $sql = "SELECT COUNT(1) as total,
         	COUNT(CASE WHEN timestamp > $hour_ago THEN 1 END) AS lasthour,
         	COUNT(CASE WHEN timestamp > $today THEN 1 END) AS today,
