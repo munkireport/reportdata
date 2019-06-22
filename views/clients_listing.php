@@ -1,13 +1,5 @@
 <?php $this->view('partials/head'); ?>
 
-<?php //Initialize models needed for the table
-new Machine_model;
-new Warranty_model;
-new Disk_report_model;
-new Reportdata_model;
-new Munkireport_model;
-?>
-
 <div class="container">
 
   <div class="row">
