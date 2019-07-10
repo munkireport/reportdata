@@ -96,11 +96,11 @@ class Reportdata_controller extends Module_controller
      **/
     public function new_clients()
     {
-        $reportdata = new Reportdata_model();
+        $db = new \Model();
 
         $where = get_machine_group_filter('WHERE', 'r');
 
-        switch ($reportdata->get_driver()) {
+        switch (conf('connection')['driver']) {
             case 'sqlite':
                 $sql = "SELECT strftime('%Y-%m', DATE(reg_timestamp, 'unixepoch')) AS date,
 						COUNT(*) AS cnt,
@@ -126,11 +126,11 @@ class Reportdata_controller extends Module_controller
             default:
                 die('Unknown database driver');
         }
-        //echo $sql;
+
         $dates = array();
         $out = array();
         
-        foreach ($reportdata->query($sql) as $event) {
+        foreach ($db->query($sql) as $event) {
             // Store date
             $d = new DateTime( $event->date );
             $lastDayOfTheMonth = $d->format( 'Y-m-t' );
