@@ -1,23 +1,17 @@
 <?php
 
 use CFPropertyList\CFPropertyList;
+use munkireport\processors\Processor;
 
-class Reportdata_processor
+class Reportdata_processor extends Processor
 {
-    private $serial_number;
-    
-    public function __construct($serial_number)
-    {
-        $this->serial_number = $serial_number;
-    }
-
     /**
      * Process data sent by postflight
      *
      * @param string data
      * @author abn290
      **/
-    public function process($plist)
+    public function run($plist)
     {
         $parser = new CFPropertyList();
         $parser->parse($plist, CFPropertyList::FORMAT_XML);

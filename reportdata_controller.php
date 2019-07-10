@@ -36,9 +36,12 @@ class Reportdata_controller extends Module_controller
      **/
     public function get_groups()
     {
-        $reportdata = new Reportdata_model();
+        $result = Reportdata_model::selectRaw('machine_group, COUNT(*) AS cnt')
+            ->groupBy('machine_group')
+            ->get()
+            ->toArray();
         $obj = new View();
-        $obj->view('json', array('msg' => $reportdata->get_groups($count = true)));
+        $obj->view('json', array('msg' => $result));
     }
     
     /**
@@ -47,11 +50,27 @@ class Reportdata_controller extends Module_controller
      **/
     public function get_lastseen_stats()
     {
-        $reportdata = new Reportdata_model();
+        $inactive_days = $this->config['days_inactive'];
+        $now = time();
+        $hour_ago = $now - 3600;
+        $today = strtotime('today');
+        $week_ago = $now - 3600 * 24 * 7;
+        $month_ago = $now - 3600 * 24 * 30;
+        $three_month_ago = $now - 3600 * 24 * 90;
+        $custom_ago = $now - 3600 * 24 * $inactive_days;
+        $reportdata = Reportdata_model::selectRaw('COUNT(1) as total,
+                COUNT(CASE WHEN timestamp > $hour_ago THEN 1 END) AS lasthour,
+                COUNT(CASE WHEN timestamp > $today THEN 1 END) AS today,
+                COUNT(CASE WHEN timestamp > $week_ago THEN 1 END) AS lastweek,
+                COUNT(CASE WHEN timestamp > $month_ago THEN 1 END) AS lastmonth,
+                COUNT(CASE WHEN timestamp BETWEEN $month_ago AND $week_ago THEN 1 END) AS inactive_week,
+                COUNT(CASE WHEN timestamp > $custom_ago THEN 1 END) AS lastcustom,
+                COUNT(CASE WHEN timestamp BETWEEN $three_month_ago AND $month_ago THEN 1 END) AS inactive_month,
+                COUNT(CASE WHEN timestamp < $three_month_ago THEN 1 END) AS inactive_three_month')
+            ->filter()
+            ->first();
         $obj = new View();
-        $obj->view('json', [
-          'msg' => $reportdata->get_lastseen_stats($this->config['days_inactive'])
-        ]);
+        $obj->view('json', ['msg' => $reportdata]);
     }
     
     /**
@@ -60,9 +79,15 @@ class Reportdata_controller extends Module_controller
      **/
     public function getUptimeStats()
     {
-        $reportdata = new Reportdata_model();
+        $reportdata = Reportdata_model::selectRaw('SUM(CASE WHEN uptime <= 86400 THEN 1 END) AS oneday,
+                SUM(CASE WHEN uptime BETWEEN 86400 AND 604800 THEN 1 END) AS oneweek,
+                SUM(CASE WHEN uptime >= 604800 THEN 1 END) AS oneweekplus')
+            ->where('uptime', '>', 0)
+            ->filter()
+            ->first();
+
         $obj = new View();
-        $obj->view('json', array('msg' => $reportdata->getUptimeStats()));
+        $obj->view('json', array('msg' => $reportdata));
     }
 
     /**
@@ -72,7 +97,6 @@ class Reportdata_controller extends Module_controller
     public function new_clients()
     {
         $reportdata = new Reportdata_model();
-        new Machine_model();
 
         $where = get_machine_group_filter('WHERE', 'r');
 
@@ -171,8 +195,7 @@ class Reportdata_controller extends Module_controller
           }
         }
         
-        $out = array();
-        $reportdata = new Reportdata_model();
+        $out = [];
 
         // Compile SQL
         $cnt = 0;
@@ -192,20 +215,23 @@ class Reportdata_controller extends Module_controller
 				FROM reportdata "
                 .get_machine_group_filter();
 
+        $reportdata = Reportdata_model::selectRaw(implode(', ', $sel_arr))
+            ->filter()
+            ->first();
         // Create Out array
-        if ($obj = current($reportdata->query($sql))) {
+        if ($reportdata) {
             $cnt = $total = 0;
             foreach ($ip_arr as $key => $value) {
                 $col = 'r' . $cnt++;
 
-                $out[] = array('key' => $key, 'cnt' => intval($obj->$col));
+                $out[] = array('key' => $key, 'cnt' => intval($reportdata[$col]));
 
-                $total += $obj->$col;
+                $total += $reportdata[$col];
             }
 
             // Add Remaining IP's as other
-            if ($obj->count - $total) {
-                $out[] = array('key' => 'Other', 'cnt' => $obj->count - $total);
+            if ($reportdata['count'] - $total) {
+                $out[] = array('key' => 'Other', 'cnt' => $reportdata['count'] - $total);
             }
         }
 
