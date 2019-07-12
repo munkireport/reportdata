@@ -17,10 +17,9 @@ class Reportdata_processor extends Processor
         $parser->parse($plist, CFPropertyList::FORMAT_XML);
         $mylist = $parser->toArray();
 
-        $model = Reportdata_model::where('serial_number', $this->serial_number)
-            ->first();
-        
-        // Check if reg_timestamp is set to determine this is a new client
+        $model = Reportdata_model::firstOrNew(['serial_number' => $this->serial_number]);
+
+            // Check if reg_timestamp is set to determine this is a new client
         if ($model->reg_timestamp){
             $new_client = False;
         }else{
@@ -47,7 +46,7 @@ class Reportdata_processor extends Processor
         }
 
         $model->fill($mylist);
-        $model->save();
+        $model->save();    
         
         if ($new_client) {
             store_event($this->serial_number, 'reportdata', 'info', 'new_client');
