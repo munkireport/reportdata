@@ -58,7 +58,7 @@ class Reportdata_controller extends Module_controller
         $month_ago = $now - 3600 * 24 * 30;
         $three_month_ago = $now - 3600 * 24 * 90;
         $custom_ago = $now - 3600 * 24 * $inactive_days;
-        $reportdata = Reportdata_model::selectRaw('COUNT(1) as total,
+        $reportdata = Reportdata_model::selectRaw("COUNT(1) as total,
                 COUNT(CASE WHEN timestamp > $hour_ago THEN 1 END) AS lasthour,
                 COUNT(CASE WHEN timestamp > $today THEN 1 END) AS today,
                 COUNT(CASE WHEN timestamp > $week_ago THEN 1 END) AS lastweek,
@@ -66,7 +66,7 @@ class Reportdata_controller extends Module_controller
                 COUNT(CASE WHEN timestamp BETWEEN $month_ago AND $week_ago THEN 1 END) AS inactive_week,
                 COUNT(CASE WHEN timestamp > $custom_ago THEN 1 END) AS lastcustom,
                 COUNT(CASE WHEN timestamp BETWEEN $three_month_ago AND $month_ago THEN 1 END) AS inactive_month,
-                COUNT(CASE WHEN timestamp < $three_month_ago THEN 1 END) AS inactive_three_month')
+                COUNT(CASE WHEN timestamp < $three_month_ago THEN 1 END) AS inactive_three_month")
             ->filter()
             ->first();
         $obj = new View();
