@@ -43,6 +43,21 @@ class Reportdata_controller extends Module_controller
         $obj = new View();
         $obj->view('json', array('msg' => $result));
     }
+
+    /**
+     * Get inactive days from config
+     *
+     * Undocumented function long description
+     *
+     * @param Type $var Description
+     **/
+    public function get_inactive_days()
+    {
+        $obj = new View();
+        $obj->view('json', [
+            'msg' => ['inactive_days' => $this->config['days_inactive']]
+        ]);
+    }
     
     /**
      * Get check-in statistics
