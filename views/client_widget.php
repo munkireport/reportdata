@@ -20,12 +20,13 @@
 <script>
 
 $(document).on('appReady', function() {
-
+	
 	// Add tooltip
-    var inactive_days = "<?php echo conf('days_inactive'); ?>";
-	$('#client-widget>div.panel-heading')
-		.attr('title', (i18n.t('client.panel_title')+" "+inactive_days+" "+i18n.t('date.day_plural')))
-		.tooltip();
+	$.getJSON( appUrl + '/module/reportdata/get_inactive_days', function( data ) {
+		$('#client-widget>div.panel-heading')
+			.attr('title', (i18n.t('client.panel_title', {number: data.inactive_days})))
+			.tooltip();
+	});
 
 	var active = i18n.t('active'),
 		inactive = i18n.t('inactive');
