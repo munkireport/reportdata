@@ -2,7 +2,6 @@
 var uptimeFormatter = function(colNumber, row){
     var col = $('td:eq('+colNumber+')', row),
     uptime = parseInt(col.text());
-    console.log(uptime)
     if(uptime == 0) {
         col.html('')
     }
