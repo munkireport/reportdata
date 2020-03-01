@@ -18,6 +18,9 @@ class Reportdata_controller extends Module_controller
             die('Authenticate first.'); // Todo: return json?
         }
 
+        // Store module path
+        $this->module_path = dirname(__FILE__) .'/';
+
         header('Access-Control-Allow-Origin: *');
         
         // Add local config
