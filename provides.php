@@ -1,6 +1,9 @@
 <?php
 
 return array(
+    'detail_widgets' => [
+        'network_detail' => ['view' => 'network_detail_widget'],
+    ],
     'listings' => array(
         'clients' => array('view' => 'clients_listing', 'i18n' => 'client.clients'),
     ),

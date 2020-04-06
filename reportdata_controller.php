@@ -32,6 +32,15 @@ class Reportdata_controller extends Module_controller
         echo "You've loaded the Reportdata module!";
     }
 
+    public function report($serial_number)
+    {
+        jsonView(
+            Reportdata_model::where('serial_number', $serial_number)
+                ->filter()
+                ->first()
+        );
+    }
+
     /**
      * Get machine groups
      *
