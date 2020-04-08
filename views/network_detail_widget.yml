@@ -1,7 +1,6 @@
 type: table
 i18n_title: network.network
 icon: fa-sitemap
-js_link: module/machine/js/machine_detail
 table:
     - i18n_header: network.remote_ip
       class: reportdata-remote_ip
