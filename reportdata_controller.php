@@ -36,7 +36,7 @@ class Reportdata_controller extends Module_controller
     {
         jsonView(
             Reportdata_model::where('serial_number', $serial_number)
-                ->filter()
+                ->filter('groupOnly')
                 ->first()
         );
     }
