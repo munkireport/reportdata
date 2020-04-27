@@ -15,7 +15,7 @@ class Reportdata_model extends Eloquent
       'uptime',
       'reg_timestamp',
       'machine_group',
-      'status',
+      'archive_status',
       'timestamp',
     ];
 

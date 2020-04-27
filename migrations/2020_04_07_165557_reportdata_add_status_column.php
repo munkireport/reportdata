@@ -11,8 +11,8 @@ class ReportdataAddStatusColumn extends Migration
     {
         $capsule = new Capsule();
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-            $table->integer('status')->default(0);
-            $table->index('status');
+            $table->integer('archive_status')->default(0);
+            $table->index('archive_status');
         });
     }
     
@@ -20,7 +20,7 @@ class ReportdataAddStatusColumn extends Migration
     {
         $capsule = new Capsule();
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('archive_status');
         });
     }
 }
