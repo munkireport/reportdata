@@ -21,7 +21,7 @@ $factory->define(Reportdata_model::class, function (Faker\Generator $faker) {
         'console_user' => $faker->userName,
         'long_username' => $faker->name,
         'remote_ip' => $faker->ipv4,
-        'uptime' => $faker->numberBetween(0, 100000),
+        'uptime' => $faker->numberBetween(0, 1000000),
         'reg_timestamp' => $faker->dateTimeBetween('-4 years')->format('U'),
         'machine_group' => 0,
         'archive_status' => $faker->numberBetween(0, 1),
