@@ -206,22 +206,14 @@ class Reportdata_controller extends Module_controller
      **/
     public function ip()
     {
-        $ip_arr = array();
         
-        // See if we're being parsed a request object
-        if (array_key_exists('req', $_GET)) {
-            $ip_arr = (array) json_decode($_GET['req']);
+        try {
+            $ip_arr = Yaml::parseFile($this->config['ip_config_path']);
+        } catch (\Exception $e) {
+            // Do something
+            $ip_arr = [];
         }
 
-        if (! $ip_arr) { // Empty array, fall back on default ip ranges
-          try {
-              $ip_arr = Yaml::parseFile($this->config['ip_config_path']);
-          } catch (\Exception $e) {
-             // Do something
-             $ip_arr = [];
-          }
-        }
-        
         $out = [];
 
         // Compile SQL
