@@ -1,12 +1,11 @@
 <div class="col-lg-4 col-md-6">
-	<div class="panel panel-default" id="client-widget">
-		<div class="panel-heading">
-			<h3 class="panel-title"><i class="fa fa-group"></i>
-				<span data-i18n="client.activity"></span>
-				<list-link data-url="/show/listing/reportdata/clients"></list-link>
-			</h3>
+	<div class="card" id="client-widget">
+		<div class="card-heading">
+			<i class="fa fa-group"></i>
+			<span data-i18n="client.activity"></span>
+			<a href="/show/listing/reportdata/clients" class="pull-right"><i class="fa fa-list"></i></a>
 		</div>
-		<div class="panel-body">
+		<div class="card-body">
 			<svg id="test1" class="center-block" style="width:258px; height: 258px"></svg>
 			<div class="text-muted text-center">
 				<span data-i18n="client.total"></span>: <span class="total-clients"></span> <span class="total-change"></span>
@@ -23,7 +22,7 @@ $(document).on('appReady', function() {
 	
 	// Add tooltip
 	$.getJSON( appUrl + '/module/reportdata/get_inactive_days', function( data ) {
-		$('#client-widget>div.panel-heading')
+		$('#client-widget>div.card-heading')
 			.attr('title', (i18n.t('client.panel_title', {number: data.inactive_days})))
 			.tooltip();
 	});
@@ -98,11 +97,9 @@ $(document).on('appReady', function() {
 				$('#client-widget span.lasthour-change').addClass('fa fa-caret-down text-danger');
 			}
 
-
 		});
 
 	};
-
 
 	// update chart data
 	$(document).on('appUpdate', function(){drawGraph()});
