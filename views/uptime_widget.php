@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-6">
 	<div class="card" id="uptime-widget">
-		<div class="card-heading" data-container="body">
+		<div class="card-header" data-container="body">
 			<i class="fa fa-power-off"></i>
 			<span data-i18n="machine.uptime.title"></span>
 			<a href="/show/listing/reportdata/clients" class="pull-right"><i class="fa fa-list"></i></a>

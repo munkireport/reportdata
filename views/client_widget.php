@@ -1,11 +1,11 @@
 <div class="col-lg-4 col-md-6">
 	<div class="card" id="client-widget">
-		<div class="card-heading">
+		<div class="card-header" data-container="card-body">
 			<i class="fa fa-group"></i>
 			<span data-i18n="client.activity"></span>
 			<a href="/show/listing/reportdata/clients" class="pull-right"><i class="fa fa-list"></i></a>
 		</div>
-		<div class="card-body">
+		<div class="card-body text-center">
 			<svg id="test1" class="center-block" style="width:258px; height: 258px"></svg>
 			<div class="text-muted text-center">
 				<span data-i18n="client.total"></span>: <span class="total-clients"></span> <span class="total-change"></span>
@@ -22,7 +22,7 @@ $(document).on('appReady', function() {
 	
 	// Add tooltip
 	$.getJSON( appUrl + '/module/reportdata/get_inactive_days', function( data ) {
-		$('#client-widget>div.card-heading')
+		$('#client-widget>div.card-header')
 			.attr('title', (i18n.t('client.panel_title', {number: data.inactive_days})))
 			.tooltip();
 	});
