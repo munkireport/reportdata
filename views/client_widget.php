@@ -50,9 +50,19 @@ $(document).on('appReady', function() {
 			.donut(true)
 			.showLabels(false);
 
+	// tooltip percentage		
+	chart.tooltip.valueFormatter(function (d, i) {
+    	var total = testdata1[0].y + testdata1[1].y;
+    	if (!total) {
+        return d;
+    		}
+    	var percent = ((d / total) * 100).toFixed(1);
+    	return d + " (" + percent + "%)";
+	});
+		
 		chart.title(" ");
 		chart.legend.updateState(false);
-		chart.tooltip.valueFormatter(function(d){return d});
+	//	chart.tooltip.valueFormatter(function(d){return d});
 
 		d3.select("#client-widget svg")
 			.datum(testdata1)
