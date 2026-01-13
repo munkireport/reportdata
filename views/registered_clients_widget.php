@@ -1,29 +1,20 @@
 <div class="col-sm-12">
-
-	<div class="panel panel-default">
-
-		<div class="panel-heading">
-
-			<h3 class="panel-title"><i class="fa fa-clock-o"></i>
-			    <span data-i18n="machine.registered.title"></span>
-			    <list-link data-url="/show/listing/munkireport/munki"></list-link>
-			</h3>
-
-		</div>
-
-		<div class="panel-body">
-
-			<svg id="chart1" style="width: 100%; height: 400px"></svg>
-
-		</div>
-
-	</div><!-- /panel -->
-
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-clock-o"></i>
+                <span data-i18n="machine.registered.title"></span>
+                <list-link data-url="/show/listing/munkireport/munki"></list-link>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <svg id="chart1" style="width: 100%; height: 400px"></svg>
+        </div>
+    </div><!-- /panel -->
 </div><!-- /col-lg-4 -->
 
 <script>
 $(document).on('appReady', function() {
-	var colors = d3.scale.category20();
+    var colors = d3.scale.category20();
     var keyColor = function(d, i) {return colors(d.key)};
 
     var url = appUrl + '/module/reportdata/new_clients'
@@ -55,23 +46,22 @@ $(document).on('appReady', function() {
                 .controlLabels(i18n.t('chart.stackedarea', {returnObjectTrees: true}))
                 .color(keyColor)
                 .duration(300);
-			chart.xAxis.tickFormat(function(d, e) {
-				if(e == undefined){ return d}
-				if(moment(d).month()){
-					return moment(d).format("MMM YYYY");
-				}
-				return moment(d).format("YYYY")
-			});
+            chart.xAxis.tickFormat(function(d, e) {
+                if(e == undefined){ return d}
+                if(moment(d).month()){
+                    return moment(d).format("MMM YYYY");
+                }
+                return moment(d).format("YYYY")
+            });
 
             chart.xAxis.showMaxMin(false);
 
             chart.yAxis.showMaxMin(false);
 
             var tooltip = chart.interactiveLayer.tooltip;
-			tooltip.headerFormatter(function (d) {
-				return moment(d).format('MMMM YYYY');
-			});
-
+            tooltip.headerFormatter(function (d) {
+                return moment(d).format('MMMM YYYY');
+            });
 
             d3.select('#chart1')
                 .datum(graphData)
@@ -89,6 +79,5 @@ $(document).on('appReady', function() {
             return chart;
         });
     });
-
 });
 </script>
