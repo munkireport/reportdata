@@ -1,6 +1,7 @@
 type: table
 i18n_title: network.network
-icon: sitemap
+icon: fa-sitemap
+tab_link: network
 table:
     - i18n_header: network.remote_ip
       class: reportdata-remote_ip
